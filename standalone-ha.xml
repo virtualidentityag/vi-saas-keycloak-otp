@@ -556,7 +556,7 @@
                 <default-provider>${keycloak.hostname.provider:default}</default-provider>
                 <provider name="default" enabled="true">
                     <properties>
-                        <property name="frontendUrl" value="${keycloak.frontendUrl:}"/>
+                        <property name="frontendUrl" value="https://develop.onlineberatung.net/auth/"/>
                         <property name="forceBackendUrlToFrontendUrl" value="false"/>
                     </properties>
                 </provider>
