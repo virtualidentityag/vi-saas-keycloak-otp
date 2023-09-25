@@ -1,6 +1,5 @@
 package de.onlineberatung.authenticator;
 
-import static de.onlineberatung.credential.MailOtpCredentialModel.createOtpModel;
 import static java.time.Clock.systemDefaultZone;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
@@ -15,6 +14,8 @@ import de.onlineberatung.otp.Otp;
 import de.onlineberatung.otp.OtpMailSender;
 import de.onlineberatung.otp.OtpService;
 import de.onlineberatung.otp.ValidationResult;
+import jakarta.ws.rs.core.MultivaluedHashMap;
+import jakarta.ws.rs.core.Response;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
