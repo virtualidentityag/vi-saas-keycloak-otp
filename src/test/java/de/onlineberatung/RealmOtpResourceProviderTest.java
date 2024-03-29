@@ -186,7 +186,7 @@ public class RealmOtpResourceProviderTest {
     var response = resourceProvider.setupOtpMail("heinrich", mailSetup);
 
     assertThat(response.getStatus()).isEqualTo(201);
-    var otpWithEmailSuccess = response.readEntity(SuccessWithEmail.class);
+    var otpWithEmailSuccess = (SuccessWithEmail) response.getEntity();
     assertThat(otpWithEmailSuccess.getEmail()).isEqualTo("hk@test.de");
     verify(mailCredentialService).activate(credentialModel, credentialContext);
     verify(appCredentialService).deleteCredentials(any(CredentialContext.class));
@@ -248,7 +248,7 @@ public class RealmOtpResourceProviderTest {
     var response = resourceProvider.getOtpSetupInfo("heinrich");
 
     assertThat(response.getStatus()).isEqualTo(200);
-    var otpInfo = response.readEntity(OtpInfoDTO.class);
+    var otpInfo = (OtpInfoDTO) response.getEntity();
     assertThat(otpInfo.getOtpSetup()).isTrue();
     assertThat(otpInfo.getOtpType()).isEqualTo(OtpType.APP);
     assertThat(otpInfo.getOtpSecret()).isNull();
@@ -265,7 +265,7 @@ public class RealmOtpResourceProviderTest {
     var response = resourceProvider.getOtpSetupInfo("heinrich");
 
     assertThat(response.getStatus()).isEqualTo(200);
-    var otpInfo = response.readEntity(OtpInfoDTO.class);
+    var otpInfo = (OtpInfoDTO) response.getEntity();
     assertThat(otpInfo.getOtpSetup()).isTrue();
     assertThat(otpInfo.getOtpType()).isEqualTo(OtpType.EMAIL);
     assertThat(otpInfo.getOtpSecret()).isEqualTo("someSecret");
@@ -285,7 +285,7 @@ public class RealmOtpResourceProviderTest {
     expectedOtpInfo.setOtpSetup(false);
     expectedOtpInfo.setOtpSecret("someSecret");
     expectedOtpInfo.setOtpSecretQrCode("base64EncodedQRCode");
-    var otpInfo = response.readEntity(OtpInfoDTO.class);
+    var otpInfo = (OtpInfoDTO) response.getEntity();
     assertThat(expectedOtpInfo).isEqualTo(otpInfo);
   }
 
