@@ -18,7 +18,6 @@ import org.keycloak.authentication.AuthenticationFlowError;
 import org.keycloak.http.HttpRequest;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.RealmModel;
-//import org.keycloak.models.UserCredentialManager;
 import org.keycloak.models.SubjectCredentialManager;
 import org.keycloak.models.UserModel;
 import org.keycloak.models.credential.OTPCredentialModel;
@@ -80,7 +79,7 @@ public class OtpParameterAuthenticatorTest {
     verify(authFlow).failure(eq(AuthenticationFlowError.INVALID_CREDENTIALS),
         responseCaptor.capture());
     assertThat(responseCaptor.getValue().getStatus()).isEqualTo(400);
-    var challenge = responseCaptor.getValue().readEntity(Challenge.class);
+    var challenge = (Challenge) responseCaptor.getValue().getEntity();
     assertThat(challenge.getOtpType()).isEqualTo(OtpType.APP);
   }
 

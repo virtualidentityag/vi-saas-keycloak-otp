@@ -109,7 +109,9 @@ public class OtpMailAuthenticatorTest {
     verify(authFlow).failure(eq(AuthenticationFlowError.INVALID_CREDENTIALS),
         responseCaptor.capture());
     assertThat(responseCaptor.getValue().getStatus()).isEqualTo(400);
-    var challenge = responseCaptor.getValue().readEntity(Challenge.class);
+
+    var challenge = (Challenge) responseCaptor.getValue().getEntity();
+
     assertThat(challenge.getOtpType()).isEqualTo(OtpType.EMAIL);
     verify(mailSender).sendOtpCode(expectedOtp, credentialContext);
   }
@@ -128,7 +130,7 @@ public class OtpMailAuthenticatorTest {
     verify(authFlow).failure(eq(AuthenticationFlowError.INVALID_CREDENTIALS),
         responseCaptor.capture());
     assertThat(responseCaptor.getValue().getStatus()).isEqualTo(400);
-    var challenge = responseCaptor.getValue().readEntity(Challenge.class);
+    var challenge = (Challenge) responseCaptor.getValue().getEntity();
     assertThat(challenge.getOtpType()).isEqualTo(OtpType.EMAIL);
     verify(mailSender).sendOtpCode(expectedOtp, credentialContext);
   }

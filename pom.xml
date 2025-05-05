@@ -12,7 +12,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
-    <keycloak.version>22.0.3</keycloak.version>
+    <keycloak.version>24.0.2</keycloak.version>
   </properties>
 
   <dependencies>
@@ -68,6 +68,11 @@
       <artifactId>keycloak-services</artifactId>
       <version>${keycloak.version}</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.core</groupId>
+      <artifactId>jersey-common</artifactId>
+      <version>3.1.5</version>
     </dependency>
 
 
