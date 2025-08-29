@@ -1,23 +1,27 @@
-# 1) Build stage: add providers, enable build-time options, then build
+# 1) Build stage
 FROM quay.io/keycloak/keycloak:26.3.3 AS builder
 
-# (optional) enable health/metrics at BUILD time
 ENV KC_HEALTH_ENABLED=true \
     KC_METRICS_ENABLED=true
 
-# Add your custom provider JAR BEFORE the build
 COPY --chown=keycloak:keycloak keycloak-otp-config-spi-1.0-SNAPSHOT-keycloak.jar /opt/keycloak/providers/
 
-# Normalize provider timestamps so Keycloak doesn't rebuild on every start
+# Normalize timestamps and build with the same options you’ll use at runtime
 RUN touch -m --date=@1743465600 /opt/keycloak/providers/* && \
-    /opt/keycloak/bin/kc.sh build
+    /opt/keycloak/bin/kc.sh build \
+      --db=mariadb \
+      --http-relative-path=/auth \
+      --http-management-relative-path=/auth \
+      --health-enabled=true \
+      --metrics-enabled=true
 
-# 2) Runtime stage: copy the built distro and just start optimized
+# 2) Runtime stage
 FROM quay.io/keycloak/keycloak:26.3.3
 COPY --from=builder /opt/keycloak/ /opt/keycloak/
 
-# Provide admin on first boot via env at runtime (recommended)
-# e.g. -e KC_BOOTSTRAP_ADMIN_USERNAME=admin -e KC_BOOTSTRAP_ADMIN_PASSWORD=change_me
+# Keep these envs the same as the build (prevents “changes detected”)
+ENV KC_HEALTH_ENABLED=true \
+    KC_METRICS_ENABLED=true
 
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
 CMD ["start","--optimized"]
