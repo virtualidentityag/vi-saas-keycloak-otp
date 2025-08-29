@@ -1,5 +1,5 @@
 # 1) Build stage
-FROM quay.io/keycloak/keycloak:26.3.3 AS builder
+FROM quay.io/keycloak/keycloak:24.0.4 AS builder
 
 ENV KC_HEALTH_ENABLED=true \
     KC_METRICS_ENABLED=true
@@ -16,7 +16,7 @@ RUN touch -m --date=@1743465600 /opt/keycloak/providers/* && \
       --metrics-enabled=true
 
 # 2) Runtime stage
-FROM quay.io/keycloak/keycloak:26.3.3
+FROM quay.io/keycloak/keycloak:24.0.4
 COPY --from=builder /opt/keycloak/ /opt/keycloak/
 
 # Keep these envs the same as the build (prevents “changes detected”)
